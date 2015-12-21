@@ -162,7 +162,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
 
         // Send the response and close the connection if necessary.
         String resString = new Date().toString()+"-"+ctx.channel().id()+"说："+res;
-        ChannelFuture f = ctx.channel().writeAndFlush(resString);
+        ChannelFuture f = ctx.channel().writeAndFlush(res);
         if (!HttpHeaderUtil.isKeepAlive(req) || res.status().code() != 200) {
             f.addListener(ChannelFutureListener.CLOSE);
         }
