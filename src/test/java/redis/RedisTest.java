@@ -21,7 +21,7 @@ public class RedisTest extends TestCase{
 	
 		@Before 
 		public void setUp() {
-			pool = new JedisPool(new JedisPoolConfig(), "192.168.31.72");  
+			pool = new JedisPool(new JedisPoolConfig(), "192.168.31.158");  
 			jedis = pool.getResource(); 
 			// jedis.auth("password");
 			} 
@@ -102,6 +102,7 @@ public class RedisTest extends TestCase{
 		
 			@Test 
 			public void test() throws InterruptedException { 
+			       
 				//keys中传入的可以用通配符  
 				System.out.println(jedis.keys("*")); //返回当前库中所有的key  [sose, sanme, name, jarorwar, foo, sname, java framework, user, braand] 
 				System.out.println(jedis.keys("*name"));//返回的sname   [sname, name] 
