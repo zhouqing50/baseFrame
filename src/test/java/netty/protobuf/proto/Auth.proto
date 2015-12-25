@@ -1,0 +1,14 @@
+option java_package = "netty.protobuf.entity";
+option java_outer_classname = "AuthProbuf"; 
+
+package auth;
+ 
+message AuthRequest{ // (1)
+    required string user_id=1;
+    required string password=2;
+}
+ 
+message AuthResponse{ //(2)
+    required int32 result_code=1;
+    required string result_message=2;
+}
