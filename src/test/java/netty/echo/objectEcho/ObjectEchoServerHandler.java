@@ -15,8 +15,6 @@
  */
 package netty.echo.objectEcho;
 
-import java.util.List;
-
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
