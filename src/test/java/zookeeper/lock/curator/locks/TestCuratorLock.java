@@ -7,7 +7,7 @@
 * @date 2015年12月31日 上午10:04:06 
 * @version V1.0   
 */
-package zookeeper.lock.curator;
+package zookeeper.lock.curator.locks;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
