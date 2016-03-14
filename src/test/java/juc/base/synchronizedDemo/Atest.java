@@ -27,6 +27,8 @@ public class Atest {
     public  void testA() {
         synchronized (this) {
             System.out.println("start  ..1.."+str);
+            //怎么检测一个线程是否持有对象监视器
+           System.out.println(Thread.holdsLock(this)); 
         }
         try {
             Thread.sleep(1000);
