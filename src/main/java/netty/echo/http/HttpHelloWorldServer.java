@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package baseFrame.netty.atest;
+package netty.echo.http;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -30,7 +30,7 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public final class HttpHelloWorldServer {
 
-    static final int PORT = Integer.parseInt(System.getProperty("port", "9990"));
+    static final int PORT = Integer.parseInt(System.getProperty("port",  "8080"));
 
     public static void main(String[] args) throws Exception {
 
@@ -48,7 +48,7 @@ public final class HttpHelloWorldServer {
             Channel ch = b.bind(PORT).sync().channel();
 
             System.err.println("Open your web browser and navigate to " +
-                    ("http") + "://127.0.0.1:" + PORT + '/');
+                    "http"+ "://127.0.0.1:" + PORT + '/');
 
             ch.closeFuture().sync();
         } finally {

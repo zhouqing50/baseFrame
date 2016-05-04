@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package baseFrame.netty.atest;
+package netty.echo.http;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -22,8 +22,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
 
 public class HttpHelloWorldServerInitializer extends ChannelInitializer<SocketChannel> {
 
-
-    public HttpHelloWorldServerInitializer() {
+    HttpHelloWorldServerInitializer( ) {
     }
 
     @Override

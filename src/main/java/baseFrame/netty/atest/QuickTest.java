@@ -31,7 +31,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 
 public class QuickTest {
 
@@ -40,7 +39,7 @@ public class QuickTest {
     	for (int i = 0; i < 100000; i++) {
     		CloseableHttpClient httpclient = HttpClients.createDefault();
             try {
-                HttpGet httpGet = new HttpGet("http://127.0.0.1:8080");
+                HttpGet httpGet = new HttpGet("http://127.0.0.1:9990");
                 CloseableHttpResponse response1 = httpclient.execute(httpGet);
                 
                 long startTime = System.nanoTime();

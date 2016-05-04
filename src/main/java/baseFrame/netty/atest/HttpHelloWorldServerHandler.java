@@ -15,32 +15,21 @@
  */
 package baseFrame.netty.atest;
 
-import static io.netty.handler.codec.http.HttpHeaderNames.CONNECTION;
-import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
-import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.Cookie;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpHeaderUtil;
-import io.netty.handler.codec.http.HttpHeaderValues;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.LastHttpContent;
-import io.netty.handler.codec.http.QueryStringDecoder;
-import io.netty.handler.codec.http.ServerCookieDecoder;
-import io.netty.handler.codec.http.ServerCookieEncoder;
+import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.HttpHeaders.Names;
+import io.netty.handler.codec.http.HttpHeaders.Values;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 
 public class HttpHelloWorldServerHandler extends ChannelHandlerAdapter {
@@ -58,20 +47,19 @@ public class HttpHelloWorldServerHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if (msg instanceof HttpRequest) {
             HttpRequest request = (HttpRequest) msg;
-
-            if (HttpHeaderUtil.is100ContinueExpected(request)) {
+            if (HttpHeaders.is100ContinueExpected(request)) {
                 ctx.write(new DefaultFullHttpResponse(HTTP_1_1, CONTINUE));
             }
-            boolean keepAlive = HttpHeaderUtil.isKeepAlive(request);
+            boolean keepAlive = HttpHeaders.isKeepAlive(request);
             
             // Encode the cookie.
-            String cookieString = request.headers().getAndConvert(HttpHeaderNames.COOKIE);
+            String cookieString = request.headers().get(Names.COOKIE);
             if (cookieString != null) {
-                Set<Cookie> cookies = ServerCookieDecoder.decode(cookieString);
+                Set<Cookie> cookies = CookieDecoder.decode(cookieString);
                 if (!cookies.isEmpty()) {
                     // Reset the cookies if necessary.
                     for (Cookie cookie: cookies) {
-                        response.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.encode(cookie));
+                        response.headers().add(Names.SET_COOKIE, ServerCookieEncoder.encode(cookie));
                     }
                 }
             } else {
@@ -80,17 +68,17 @@ public class HttpHelloWorldServerHandler extends ChannelHandlerAdapter {
                 response.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.encode("key2", "value2"));*/
             }
             
-            if (HttpHeaderUtil.is100ContinueExpected(request)) {
+            if (HttpHeaders.is100ContinueExpected(request)) {
                 send100Continue(ctx);
             }
 
-            responseContent.append("VERSION: ").append(request.protocolVersion()).append("\r\n");
-            responseContent.append("HOSTNAME: ").append(request.headers().get(HttpHeaderNames.HOST, "unknown")).append("\r\n");
-            responseContent.append("REQUEST_URI: ").append(request.uri()).append("\r\n\r\n");
+            responseContent.append("VERSION: ").append(request.getProtocolVersion()).append("\r\n");
+            //responseContent.append("HOSTNAME: ").append(request.headers().).append("\r\n");
+            responseContent.append("REQUEST_URI: ").append(request.getUri()).append("\r\n\r\n");
 
             HttpHeaders headers = request.headers();
             if (!headers.isEmpty()) {
-                for (Map.Entry<CharSequence, CharSequence> h: headers) {
+                for (Entry<String, String> h: headers) {
                     CharSequence key = h.getKey();
                     CharSequence value = h.getValue();
                     responseContent.append("HEADER: ").append(key).append(" = ").append(value).append("\r\n");
@@ -98,7 +86,7 @@ public class HttpHelloWorldServerHandler extends ChannelHandlerAdapter {
                 responseContent.append("\r\n");
             }
 
-            QueryStringDecoder queryStringDecoder = new QueryStringDecoder(request.uri());
+            QueryStringDecoder queryStringDecoder = new QueryStringDecoder(request.getUri());
             Map<String, List<String>> params = queryStringDecoder.parameters();
             if (!params.isEmpty()) {
                 for (Entry<String, List<String>> p: params.entrySet()) {
@@ -118,7 +106,7 @@ public class HttpHelloWorldServerHandler extends ChannelHandlerAdapter {
             if (!keepAlive) {
                 ctx.write(response).addListener(ChannelFutureListener.CLOSE);
             } else {
-                response.headers().set(CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+                response.headers().set(Names.CONNECTION, Values.KEEP_ALIVE);
                 ctx.write(response);
             }
         }
@@ -167,8 +155,8 @@ public class HttpHelloWorldServerHandler extends ChannelHandlerAdapter {
          res.append("</table>\r\n");
          
          response = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(res.toString().getBytes()));
-         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html; charset=UTF-8");
-         response.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
+         response.headers().set(Names.CONTENT_TYPE, "text/html; charset=UTF-8");
+         response.headers().set(Names.CONTENT_LENGTH, response.content().readableBytes());
          return response;
 	}
 
