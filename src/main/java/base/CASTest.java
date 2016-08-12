@@ -3,8 +3,9 @@ package base;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by zhouq
- * on 2016/5/3.
+ * @describe:
+ * @author: zhouq
+ * @date: 2016/5/5 14:15
  */
 public class CASTest {
 
