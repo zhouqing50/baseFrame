@@ -28,7 +28,8 @@ public class TimeServer {
 	                	 ch.pipeline().addLast(new LineBasedFrameDecoder(1024));
 	                	 ch.pipeline().addLast(new StringDecoder());
 	                     ch.pipeline().addLast(new TimeServerHandler());
-	                 }
+//						 ch.pipeline().addLast(new DefaultEventExecutorGroup(5), new TimeServerHandler());
+					 }
 				});
 			
 			 // Start the server.

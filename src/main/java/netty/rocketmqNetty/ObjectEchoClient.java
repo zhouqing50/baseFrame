@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package netty.echo.objectEcho;
+package netty.rocketmqNetty;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -30,7 +30,7 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
 public final class ObjectEchoClient {
 
     static final String HOST = System.getProperty("host", "127.0.0.1");
-    static final int PORT = Integer.parseInt(System.getProperty("port", "8007"));
+    static final int PORT = Integer.parseInt(System.getProperty("port", "3337"));
     static final int SIZE = Integer.parseInt(System.getProperty("size", "10"));
 
     public static void main(String[] args) throws Exception {
@@ -51,16 +51,7 @@ public final class ObjectEchoClient {
                 }
              });
 
-            ChannelFuture future = b.connect(HOST, PORT).addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture f) throws Exception {
-                    if (f.isSuccess()) {
-                        System.out.println("success");
-                    } else {
-                        System.out.println("failed");
-                    }
-                }
-            }).sync().channel().closeFuture().sync();
+            ChannelFuture future = b.connect(HOST, PORT).sync().channel().closeFuture().sync();
             // Start the connection attempt.
            // b.connect(HOST, PORT).sync().channel().closeFuture().sync();
         } finally {

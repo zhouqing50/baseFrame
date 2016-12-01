@@ -1,7 +1,6 @@
 package base.TryCatchFinally;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Description:
@@ -12,7 +11,12 @@ import java.util.Map;
 
 public class FinallyTest6 {
     public static void main(String[] args) {
-        System.out.println(getMap().get("KEY"));
+
+        //个人
+        Set<Integer> users = new HashSet<>(new ArrayList<>());
+
+
+        //System.out.println(getMap().get("KEY"));
     }
 
     public static Map<String, String> getMap() {
